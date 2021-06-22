@@ -1,5 +1,5 @@
 import django.http
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 from .models import Fight
@@ -31,28 +31,34 @@ def new_fight(req):
         return django.http.HttpResponseForbidden
 
 def red_vote(req, pk):
-    fight = get_object_or_404(Fight, id=req.POST.get('fight_id'))
-    voted = False
-    if fight.red_votes.filter(id=req.user.id).exists():
-        fight.red_votes.remove(req.user)
+    if req.method == 'POST' and req.user.is_authenticated:
+        fight = get_object_or_404(Fight, id=req.POST.get('fight_id'))
         voted = False
+        if fight.red_votes.filter(id=req.user.id).exists():
+            fight.red_votes.remove(req.user)
+            voted = False
+        else:
+            voted = True
+            fight.red_votes.add(req.user)
+        fight.save()
+        return HttpResponseRedirect(f'/fight/{pk}')
     else:
-        voted = True
-        fight.red_votes.add(req.user)
-    fight.save()
-    return HttpResponseRedirect(f'/fight/{pk}')
+        return HttpResponseForbidden()
 
 def blue_vote(req, pk):
-    fight = get_object_or_404(Fight, id=req.POST.get('fight_id'))
-    voted = False
-    if fight.blue_votes.filter(id=req.user.id).exists():
-        fight.blue_votes.remove(req.user)
+    if req.method == 'POST' and req.user.is_authenticated:
+        fight = get_object_or_404(Fight, id=req.POST.get('fight_id'))
         voted = False
+        if fight.blue_votes.filter(id=req.user.id).exists():
+            fight.blue_votes.remove(req.user)
+            voted = False
+        else:
+            voted = True
+            fight.blue_votes.add(req.user)
+        fight.save()
+        return HttpResponseRedirect(f'/fight/{pk}')
     else:
-        voted = True
-        fight.blue_votes.add(req.user)
-    fight.save()
-    return HttpResponseRedirect(f'/fight/{pk}')
+        return HttpResponseForbidden()
 
 def view_fight(req, pk):
     fight = Fight.objects.get(pk=pk)
