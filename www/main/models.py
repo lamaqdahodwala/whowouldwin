@@ -6,3 +6,5 @@ class Fight(models.Model):
     red = models.CharField(max_length=50)
     blue = models.CharField(max_length=50)
     op = models.ForeignKey(User, on_delete=models.CASCADE)
+    red_votes = models.ManyToManyField(User, related_name='redvotes')
+    blue_votes = models.ManyToManyField(User, related_name='bluevotes')

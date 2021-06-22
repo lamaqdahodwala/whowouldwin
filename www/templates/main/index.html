@@ -2,12 +2,23 @@
 
 {% block content %}
 <div class="container">
-    {% for i in object_list %}
-        <div class="box is-fluid">
-            <a class="title" href="{% url 'view_fight' i.pk %}">{{i.red}} vs. {{i.blue}}</a>
+    <div class="columns">
+        <div class="column">
+            {% for i in object_list %}
+                <div class="box is-fluid">
+                    <a class="title" href="{% url 'view_fight' i.pk %}">{{i.red}} vs. {{i.blue}}</a>
+                </div>
+            {% empty %}
+                <h1 class="content">No polls yet</h1>
+            {% endfor %}
         </div>
-    {% empty %}
-        <h1 class="content">No polls yet</h1>
-    {% endfor %}
+        <div class="column is-3">
+            <div class="is-flex is-align-items-center">
+                <div class="buttons">
+                    <a class="button is-info is-outlined" href="{% url 'newfight' %}">New Fight</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
