@@ -1,5 +1,6 @@
 import django.http
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 from .models import Fight
 from .forms import FightForm
@@ -29,6 +30,29 @@ def new_fight(req):
     else:
         return django.http.HttpResponseForbidden
 
+def red_vote(req, pk):
+    fight = get_object_or_404(Fight, id=req.POST.get('fight_id'))
+    voted = False
+    if fight.red_votes.filter(id=req.user.id).exists():
+        fight.red_votes.remove(req.user)
+        voted = False
+    else:
+        voted = True
+        fight.red_votes.add(req.user)
+    fight.save()
+    return HttpResponseRedirect(f'/fight/{pk}')
+
+def blue_vote(req, pk):
+    fight = get_object_or_404(Fight, id=req.POST.get('fight_id'))
+    voted = False
+    if fight.blue_votes.filter(id=req.user.id).exists():
+        fight.blue_votes.remove(req.user)
+        voted = False
+    else:
+        voted = True
+        fight.blue_votes.add(req.user)
+    fight.save()
+    return HttpResponseRedirect(f'/fight/{pk}')
 
 def view_fight(req, pk):
     fight = Fight.objects.get(pk=pk)
