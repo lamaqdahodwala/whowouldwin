@@ -22,3 +22,7 @@ def new_fight(req):
             return render(req, 'main/newfight.html', {'form': form})
     else:
         return django.http.HttpResponseForbidden
+    
+def view_fight(req, pk):
+    fight = Fight.objects.get(pk=pk)
+    return render(req, 'main/fight.html', {'fight': fight})

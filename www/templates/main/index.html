@@ -4,7 +4,7 @@
 <div class="container">
     {% for i in object_list %}
         <div class="box is-fluid">
-            <h1 class="title">{{i.red}} vs. {{i.blue}}</h1>
+            <a class="title" href="{% url 'view_fight' i.pk %}">{{i.red}} vs. {{i.blue}}</a>
         </div>
     {% empty %}
         <h1 class="content">No polls yet</h1>
