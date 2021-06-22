@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <form action="{% url 'newfight' %}" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="button is-primary" type="submit">Create new fight</button>
+    </form>
+</div>
+{% endblock %}
