@@ -16,6 +16,7 @@ def new_fight(req):
             inst = form.save(commit=False)
             inst.op = req.user
             inst.save()
+            return django.http.HttpResponseRedirect('/')
         else:
             form = FightForm()
             return render(req, 'main/newfight.html', {'form': form})
