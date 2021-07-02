@@ -1,3 +1,6 @@
-FROM ubuntu
+FROM python
 
-CMD [ "echo", "Hello world!" ]
+WORKDIR /
+
+RUN python -m pip install requirements.txt
+
