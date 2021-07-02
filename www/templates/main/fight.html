@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="title has-text-centered is-1">{{fight.red}} vs. {{fight.blue}}</h1>
+    <h1 class="title has-text-centered is-1"><a href="">{{fight.red}}</a> vs. <a href="">{{fight.blue}}</a></h1>
     <div class="columns">
         <div class="column">
             <div class="box is-fluid">
@@ -18,24 +18,37 @@
     <div class="is-flex is-justify-content-center">
 
         <div class="buttons">
-            <form action="{% url 'redvote' fight.pk %}" method="POST" class='mx-3'>
-                {% csrf_token %}
-                {% if voted_red %}
-                    <button class="button is-danger" name="fight_id" value="{{fight.pk}}">Remove vote for {{fight.red}}</button>
-                {% else %} 
-                    <button class="button is-danger" name="fight_id" value="{{fight.pk}}">Vote for {{fight.red}}</button>
-                
-                {% endif %}
-            </form>
-            <form action="{% url 'bluevote' fight.pk %}" method="POST" class='mx-3'>
-                {% csrf_token %}
-                {% if voted_blue %}
-                    <button class="button is-info" name="fight_id" value="{{fight.pk}}"> Remove vote for {{fight.blue}}</button>
- 
-                {% else %} 
-                    <button class="button is-info" name="fight_id" value="{{fight.pk}}">Vote for {{fight.blue}}</button>
-                {% endif %}
-            </form>
+            {% if user.is_authenticated %}
+                <form action="{% url 'redvote' fight.pk %}" method="POST" class='mx-3'>
+                    {% csrf_token %}
+                    {% if voted_red %}
+                        <button class="button is-danger" name="fight_id" value="{{fight.pk}}">Remove vote for {{fight.red}}</button>
+                    {% else %} 
+                        <button class="button is-danger" name="fight_id" value="{{fight.pk}}">Vote for {{fight.red}}</button>
+                    
+                    {% endif %}
+                </form>
+                <form action="{% url 'bluevote' fight.pk %}" method="POST" class='mx-3'>
+                    {% csrf_token %}
+                    {% if voted_blue %}
+                        <button class="button is-info" name="fight_id" value="{{fight.pk}}"> Remove vote for {{fight.blue}}</button>
+    
+                    {% else %} 
+                        <button class="button is-info" name="fight_id" value="{{fight.pk}}">Vote for {{fight.blue}}</button>
+                    {% endif %}
+                </form>
+            {% else %} 
+                <button class="button is-disabled" onclick='alert("Login or signup to vote!")'>Vote for {{fight.blue}}</button>
+                <button class="button is-disabled" onclick='alert("Login or signup to vote!")'>Vote for {{fight.red}}</button>
+            {% endif %}
+        </div>
+    </div>
+    <div class="has-text-centered">
+        <hr>
+        <h1 class="title">Standings:</h1>
+        <div class="columns">
+            <div class="column subtitle">Red votes: {{fight.red_votes.count}}</div>
+            <div class="column subtitle">Blue votes: {{fight.blue_votes.count}}</div>
         </div>
     </div>
 </div>

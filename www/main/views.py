@@ -17,7 +17,6 @@ class Indexview(ListView):
 
 
 def new_fight(req):
-    if req.user.is_authenticated:
         if req.method == "POST":
             form = FightForm(req.POST or None)
             inst = form.save(commit=False)
@@ -27,8 +26,6 @@ def new_fight(req):
         else:
             form = FightForm()
             return render(req, "main/newfight.html", {"form": form})
-    else:
-        return django.http.HttpResponseForbidden
 
 def red_vote(req, pk):
     if req.method == 'POST' and req.user.is_authenticated:
