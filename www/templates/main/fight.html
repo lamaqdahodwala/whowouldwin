@@ -2,15 +2,23 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="title">{{fight.red}} vs. {{fight.blue}}</h1>
-    <div class="content">
-        In the red corner: {{fight.red}} <br><br>
-        In the blue corner: {{fight.blue}}
+    <h1 class="title has-text-centered is-1">{{fight.red}} vs. {{fight.blue}}</h1>
+    <div class="columns">
+        <div class="column">
+            <div class="box is-fluid">
+                <h1 class="title">In the Red Corner... {{fight.red}}</h1>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box is-fluid">
+                <h1 class="title">In the Blue Corner... {{fight.blue}}</h1>
+            </div>
+        </div>
     </div>
     <div class="is-flex is-justify-content-center">
 
         <div class="buttons">
-            <form action="{% url 'redvote' fight.pk %}" method="POST">
+            <form action="{% url 'redvote' fight.pk %}" method="POST" class='mx-3'>
                 {% csrf_token %}
                 {% if voted_red %}
                     <button class="button is-danger" name="fight_id" value="{{fight.pk}}">Remove vote for {{fight.red}}</button>
@@ -19,7 +27,7 @@
                 
                 {% endif %}
             </form>
-            <form action="{% url 'bluevote' fight.pk %}" method="POST">
+            <form action="{% url 'bluevote' fight.pk %}" method="POST" class='mx-3'>
                 {% csrf_token %}
                 {% if voted_blue %}
                     <button class="button is-info" name="fight_id" value="{{fight.pk}}"> Remove vote for {{fight.blue}}</button>
