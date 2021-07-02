@@ -7,8 +7,18 @@
         In the red corner: {{fight.red}} <br><br>
         In the blue corner: {{fight.blue}}
     </div>
-    <div class="buttons">
-        
+    <div class="is-flex is-justify-content-center">
+
+        <div class="buttons">
+            <form action="{% url 'redvote' fight.pk %}" method="POST">
+                {% csrf_token %}
+                <button class="button is-danger" name="fight_id" value="{{fight.pk}}">Vote for {{fight.red}}</button>
+            </form>
+            <form action="{% url 'bluevote' fight.pk %}" method="POST">
+                {% csrf_token %}
+                <button class="button is-info" name="fight_id" value="{{fight.pk}}">Vote for {{fight.blue}}</button>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}
