@@ -8,6 +8,42 @@
 
 </head>
 <body>
+	<nav class="navbar">
+		<div class="navbar-brand">
+			<div class="navbar-item">
+				<a href='/' class="title">Who would win?</a>
+			</div>
+		</div>
+		
+		<div class="navbar-start">
+			<a href="{% url 'index' %}" class="navbar-item">
+				Home
+			</a>
+			<a href="{% url 'newfight' %}" class='navbar-item'>
+				New fight
+			</a>
+		</div>
+
+		<div class="navbar-end">
+			{% if user.is_authenticated %} 
+				<a href="#" class="navbar-item">
+					{{user.username}}
+				</a>
+			{% else %} 
+				<div class="navbar-item">
+					<div class="buttons">
+						<a href="{% url 'login' %}" class="button is-primary">
+							Login
+						</a>
+						<a href="{% url 'signup' %}" class='button is-info'>
+							Sign up
+						</a>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</nav>
+	<br><br>
 	{% block content %}
 
     {% endblock %}
