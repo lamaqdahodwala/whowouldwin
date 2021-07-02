@@ -38,7 +38,8 @@ def red_vote(req, pk):
             fight.red_votes.remove(req.user)
             voted = False
         else:
-            voted = True
+            if fight.blue_votes.filter(id=req.user.id).exists():
+                fight.blue_votes.remove(req.user)
             fight.red_votes.add(req.user)
         fight.save()
         return HttpResponseRedirect(f'/fight/{pk}')
@@ -54,6 +55,9 @@ def blue_vote(req, pk):
             voted = False
         else:
             voted = True
+            if fight.red_votes.filter(id=req.user.id).exists():
+                fight.red_votes.remove(req.user)
+
             fight.blue_votes.add(req.user)
         fight.save()
         return HttpResponseRedirect(f'/fight/{pk}')
@@ -61,5 +65,14 @@ def blue_vote(req, pk):
         return HttpResponseForbidden()
 
 def view_fight(req, pk):
-    fight = Fight.objects.get(pk=pk)
-    return render(req, "main/fight.html", {"fight": fight})
+    fight:Fight = Fight.objects.get(pk=pk)
+    voted_blue, voted_red = False, False
+    if fight.blue_votes.filter(id=req.user.id).exists():
+        voted_blue = True
+        voted_red = False
+    
+    if fight.red_votes.filter(id=req.user.id).exists():
+        voted_red=True
+        voted_blue=False
+    
+    return render(req, "main/fight.html", {"fight": fight, "voted_blue": voted_blue, "voted_red": voted_red})

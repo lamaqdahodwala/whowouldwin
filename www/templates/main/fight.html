@@ -12,11 +12,21 @@
         <div class="buttons">
             <form action="{% url 'redvote' fight.pk %}" method="POST">
                 {% csrf_token %}
-                <button class="button is-danger" name="fight_id" value="{{fight.pk}}">Vote for {{fight.red}}</button>
+                {% if voted_red %}
+                    <button class="button is-danger" name="fight_id" value="{{fight.pk}}">Remove vote for {{fight.red}}</button>
+                {% else %} 
+                    <button class="button is-danger" name="fight_id" value="{{fight.pk}}">Vote for {{fight.red}}</button>
+                
+                {% endif %}
             </form>
             <form action="{% url 'bluevote' fight.pk %}" method="POST">
                 {% csrf_token %}
-                <button class="button is-info" name="fight_id" value="{{fight.pk}}">Vote for {{fight.blue}}</button>
+                {% if voted_blue %}
+                    <button class="button is-info" name="fight_id" value="{{fight.pk}}"> Remove vote for {{fight.blue}}</button>
+ 
+                {% else %} 
+                    <button class="button is-info" name="fight_id" value="{{fight.pk}}">Vote for {{fight.blue}}</button>
+                {% endif %}
             </form>
         </div>
     </div>
