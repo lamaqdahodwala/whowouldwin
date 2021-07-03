@@ -1,1 +1,1 @@
-web: cd www && gunicorn www.wsgi
+web: cd www && python manage.py migrate && gunicorn www.wsgi
